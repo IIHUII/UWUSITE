@@ -55,7 +55,7 @@ Receive a ZIP file containing all emojis and stickers.
 
 ```js
 📎 How to check:
-Go to the GitHub link: (your GitHub link here)
+Go to the GitHub link: githb.com/IIHUII/UWUSITE
 Search the code and see if it contains anything malicious like mining scripts or token leaks.
 Be smart. Always verify before you trust.
 ```
