@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Emoji Downloader | Bloodmoon Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-skull"></i>
+                </div>
+                <div class="logo-text">Bloodmoon Tools</div>
+            </div>
+            <nav class="nav-menu">
+                <a href="https://discord.gg/S3eBmcWFj4"><i class="fab fa-discord"></i></a>
+                <a href="github.com/IIHUII"><i class="fab fa-github"></i></a>
+                <a href="https://x.com/s2r_o42141"><i class="fab fa-twitter"></i></a>
+            </nav>
+        </header>
+
+        <section class="tool-section">
+            <h1>Discord Emoji Downloader</h1>
+            <p>Unlock the full potential of your Discord server with our powerful emoji management tool. Download, organize, and enhance your emoji collection with ease. Built for Discord power users.</p>
+
+            <div class="ui inverted raised very padded text container segment">
+                <div class="ui inverted secondary pointing menu">
+                    <a class="item active" data-tab="default">Default</a>
+                    <a class="item" data-tab="manual">Manual</a>
+                </div>
+
+                <div class="ui inverted tab segment active" id="default-1" data-tab="default">
+                    <div class="ui warning message">
+                        <div class="header">
+                            Warning: be careful, sharing your user token can be dangerous!
+                        </div>
+                        This page does not use your user token in any harmful way and only uses it to authenticate with Discord, fetch your server list and their emojis.<br />
+                        (<a href="#" target="_blank">Source can be found here</a>)
+                    </div>
+                    <form class="ui inverted form">
+                        <div class="field">
+                            <label>User Token <span class="link" onclick="helpModal();">(?)</span></label>
+                            <input type="password" name="token" id="token" placeholder="mfa.ABcd1e2Fgh3i-jKlmnoPQRstu4VWx4yz5A6b7cDEFGhiJk8LmNOPqR_sSTUV9XyzabcdeF0Xd" autocomplete="new-password" />
+                        </div>
+                        <button name="continue" id="continue" class="ui inverted button">Continue</button>
+                    </form>
+                </div>
+
+                <div class="ui inverted tab segment" id="default-2" data-tab="default-hide" style="display: none;">
+                    <form class="ui inverted form">
+                        <div class="field">
+                            <label>Server</label>
+                            <div class="ui fluid search selection dropdown" id="server-select">
+                                <input type="hidden" name="server" />
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Select Server</div>
+                            </div>
+                        </div>
+                        <div class="field" id="emojis" style="display: none;">
+                            <label>Select emojis <span id="emojicount"></span></label>
+                            <div class="ui fluid multiple search selection dropdown" id="emoji-select">
+                                <input type="hidden" name="emojis" />
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Select Emojis</div>
+                            </div>
+                        </div>
+                        <div class="field" id="stickers" style="display: none;">
+                            <label>Select stickers <span id="stickercount"></span></label>
+                            <div class="ui fluid multiple search selection dropdown" id="sticker-select">
+                                <input type="hidden" name="stickers" />
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Select Sticker</div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button name="submit" id="submit" class="ui inverted primary button">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="ui inverted tab segment" id="manual" data-tab="manual" style="display: none;">
+                    <p>Make a GET request to <code>https://discord.com/api/v10/guilds/:id</code>, with <code>:id</code> being the server ID, also make sure you're authorised with your user token. Then copy paste the response JSON data in the textarea below <i>(in which an example is placed)</i>.</p>
+                    <p>
+                        <div class="ui inverted form">
+                            <div class="field">
+                                <label>Guild Object</label>
+                                <div id="editor" style="height: 350px; width: 100%; background: #1a1a1a; border: 1px solid var(--blood-light); border-radius: 4px;"></div>
+                            </div>
+                            <div class="field">
+                                <button name="submit" id="submit-manual" class="ui inverted primary button">Submit</button>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+
+                <div id="messages" style="display: none;">
+                    <div class="ui icon message" id="loading">
+                        <i class="notched circle loading icon"></i>
+                        <div class="content">
+                            <div class="header" id="loading-header">
+                            Just a moment
+                            </div>
+                            <p id="loading-msg">Collecting the emojis/stickers for you.</p>
+                        </div>
+                    </div>
+
+                    <div class="ui icon success message" id="success">
+                        <i class="smile icon"></i>
+                        <div class="content">
+                            <div class="header" id="success-header">
+                            We found them!
+                            </div>
+                            <p id="success-msg">Found <strong id="emoji-count">NaN</strong> emojis and <strong id="sticker-count">NaN</strong> stickers which are packed in a ZIP file above.</p>
+                        </div>
+                    </div>
+
+                    <div class="ui icon error message" id="error">
+                        <i class="warning circle icon"></i>
+                        <div class="content">
+                            <div class="header" id="error-header">
+                                An error occured
+                            </div>
+                            <p id="error-msg"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="developer-section">
+            <h2 class="section-title">The Developer</h2>
+            <p style="max-width: 700px; margin: 0 auto 40px; color: var(--text-dim);">Meet the developer behind this powerful tool - a dedicated expert in Discord technologies and emoji manipulation.</p>
+
+            <div class="developer-card">
+                <h3 class="developer-name">lunaX or Sefo.php</h3>
+                <div class="developer-role">Lead Developer & Ui roblox </div>
+                <div class="developer-links">
+                       <a href="https://discord.gg/S3eBmcWFj4"><i class="fab fa-discord"></i></a>
+                <a href="github.com/IIHUII"><i class="fab fa-github"></i></a>
+                <a href="https://x.com/s2r_o42141"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2 class="section-title">FAQ</h2>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is this tool safe to use with Discord?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely! Our tool operates entirely within your browser. We don't store your Discord token, server information, or downloaded emojis. Your data never leaves your computer, ensuring maximum privacy and security.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Do I need special permissions to download emojis?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, you need to have "Manage Emojis" permission in the Discord server you want to download from. This is a security requirement from Discord to prevent unauthorized access to server assets.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I download animated emojis as well?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, our tool fully supports animated emojis (Nitro emojis). They will be downloaded as high-quality GIF files preserving all animations. Static emojis are downloaded as PNG files.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I get my Discord token?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        We provide detailed, step-by-step instructions within the tool on how to safely retrieve your Discord token. Remember to treat your token like a password and never share it with anyone.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is this tool against Discord's terms of service?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        This tool operates within Discord's API guidelines. However, you should always respect server rules and only download emojis from servers where you have explicit permission to do so.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+
+
+
+
+            <div class="copyright">
+                &copy; 2023 Bloodmoon Team. All rights reserved.<br>
+                Discord is a trademark of Discord Inc. We are not affiliated with Discord Inc.
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/ace.min.js"></script>
+    <script src="assets/app.js"></script>
+</body>
+</html>
