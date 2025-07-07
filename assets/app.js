@@ -1,8 +1,8 @@
-   // Initialize Semantic UI components
+
         $('.menu .item').tab();
         $('.ui.dropdown').dropdown();
 
-        // Initialize Ace Editor
+      
         const editor = ace.edit("editor");
         editor.setTheme("ace/theme/twilight");
         editor.session.setMode("ace/mode/json");
@@ -32,7 +32,7 @@
         }, null, 2));
         editor.clearSelection();
 
-        // Tool functionality
+      
         const downloadBtn = $(`<button class="ui labeled icon red button" id="download" type="button"><i class="cloud download icon"></i> Download</button>`);
         const Emoji = (emojiID, animated = false) => `https://cdn.discordapp.com/emojis/${emojiID}.${animated ? "gif" : "png"}?v=1`;
         const Sticker = (stickerID) => `https://cdn.discordapp.com/stickers/${stickerID}.png?size=1024`;
@@ -92,7 +92,7 @@
             return disambiguatedEmoji;
         }
 
-        // Event handlers
+       
         $("#tokenHelp").click(() => {
             $(".ui.basic.modal").modal("show");
         });
@@ -347,7 +347,7 @@ Stay adorable~
             }
         });
 
-        // FAQ toggle functionality
+
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
                 const faqItem = question.parentNode;
@@ -355,7 +355,6 @@ Stay adorable~
             });
         });
 
-        // Tooltip for token help
         function helpModal() {
             $('.ui.basic.modal').modal('show');
         }
